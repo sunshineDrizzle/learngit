@@ -1,5 +1,10 @@
 Git仓库的初始化命令：git init
-添加文件到Git仓库，分两步：（在第一次的时候需要给出用户名和密码）
+
+添加文件到Git仓库，分两步：
     第一步，使用命令git add <file>，可反复多次使用，添加多个文件；
     第二步，使用命令git commit，完成。最好是用-m说明一下这次提交的改动
+    注意：在第一次使用git commit之前要给出user.email和user.name, to set your account's default identity.，命令是:
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
+Omit --global to set the identity only in this repository.
 
