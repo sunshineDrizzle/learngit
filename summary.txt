@@ -8,3 +8,6 @@ git config --global user.email "you@example.com"
 git config --global user.name "Your Name"
 Omit --global to set the identity only in this repository.
 
+命令git status可以随时掌握工作区的状态
+
+命令git diff <file>可以查看文本文件修改的内容
