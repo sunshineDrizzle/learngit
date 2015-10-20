@@ -1,8 +1,13 @@
+工作区（Working Directory）就是你在电脑里能看到的目录，比如learngit文件夹就是一个工作区。
+
+版本库（Repository）：工作区有一个隐藏目录.git，这个不算工作区，而是Git的版本库。
+Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD。
+
 Git仓库的初始化命令：git init
 
 添加文件到Git仓库，分两步：
-    第一步，使用命令git add <file>，可反复多次使用，添加多个文件；
-    第二步，使用命令git commit，完成。最好是用-m说明一下这次提交的改动
+    第一步，使用命令git add <file>，可反复多次使用，添加多个文件；（实际上就是把文件修改添加到暂存区）
+    第二步，使用命令git commit，完成。最好是用-m说明一下这次提交的改动（实际上就是把暂存区的所有内容提交到当前分支。）
     注意：在第一次使用git commit之前要给出user.email和user.name, to set your account's default identity.，命令是:
 git config --global user.email "you@example.com"
 git config --global user.name "Your Name"
@@ -11,3 +16,14 @@ Omit --global to set the identity only in this repository.
 命令git status可以随时掌握工作区的状态
 
 命令git diff <file>可以查看文本文件修改的内容
+
+命令git log可以查看提交历史，以便确定要回退到哪个版本。
+加上参数--pretty=oneline可以查看简要信息
+
+HEAD指针指向的版本就是当前版本，因此，Git允许我们在版本的历史之间穿梭，使用命令git reset --hard commit_id
+上一个版本就是HEAD^，上上一个版本就是HEAD^^，当然往上100个版本写100个^比较容易数不过来，所以写成HEAD~100，用命令：git reset --hard HEAD^ 可以回到上一个版本
+
+只要知道未来某个版本的版本号就可以重返未来，之前的信息找不到版本号的话，可以用git reflog查看命令历史，以便确定要回到未来的哪个版本。
+
+问题1：如果我一次性提交了多个新文件，但是想要回退其中一个文件。可是似乎前面的版本回退是把整个库里的所有文件都给回退了，我觉得这样不好，能不能只指定回退其中一个文件呢？
+
