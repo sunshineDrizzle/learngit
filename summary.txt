@@ -44,3 +44,19 @@ Git同样告诉我们，用命令git reset HEAD <file>可以把暂存区的修�
 场景1：当你改乱了工作区某个文件的内容，想直接丢弃工作区的修改时，用命令git checkout -- file。
 场景2：当你不但改乱了工作区某个文件的内容，还添加到了暂存区时，想丢弃修改，分两步，第一步用命令git reset HEAD file，就回到了场景1，第二步按场景1操作。
 场景3：已经提交了不合适的修改到版本库时，想要撤销本次提交，参考版本回退一节，不过前提是没有推送到远程库。
+
+命令git rm <file>用于删除一个文件。如果一个文件已经被提交到版本库，那么你永远不用担心误删，但是要小心，你只能恢复文件到最新版本，你会丢失最近一次提交后你修改的内容。因为删除也算是修改，所以可以用git checkout -- <file>恢复（其实就是把最新版本中的<file>恢复到工作区）
+如果确实要从版本库中删除该文件，那就用命令git rm删掉，并且git commit
+
+SSH连接的设置详见廖雪峰老师的Git教程
+
+要关联一个远程库，使用命令git remote add origin git@server-name:path/repo-name.git（add后面的参数是远程库的名字，这里的名字就是origin，沿用于下面的git push）
+关联后，使用命令git push -u origin master第一次推送master分支的所有内容（由于远程库是空的，我们第一次推送master分支时，加上了-u参数）
+此后，每次本地提交后，只要有必要，就可以使用命令git push origin master推送最新修改
+
+要克隆一个仓库，首先必须知道仓库的地址，然后使用git clone命令克隆。例如：
+git clone git@github.com:github_account/repo_name.git
+
+Git支持多种协议，包括https，但通过ssh支持的原生git协议速度最快。
+
+
