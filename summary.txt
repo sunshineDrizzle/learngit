@@ -78,4 +78,27 @@ Git支持多种协议，包括https，但通过ssh支持的原生git协议速度
 合并分支时，加上--no-ff参数就可以用普通模式合并，合并后的历史有分支，能看出来曾经做过合并，而fast forward合并就看不出来曾经做过合并。
 如果强制禁用Fast forward模式，Git就会在merge时生成一个新的commit（所以可以在--no-ff后面加上-m说明信息），这样，从分支历史上就可以看出分支信息。
 
+修复bug时，我们会通过创建新的bug分支进行修复，然后合并，最后删除；
 
+当手头工作没有完成时，先把工作现场git stash一下，然后去修复bug，修复后，转到工作分支，一是用git stash apply恢复，但是恢复后，stash内容并不删除，你需要用git stash drop来删除；另一种方式是用git stash pop，恢复的同时把stash内容也删了。你可以多次stash，恢复的时候，先用git stash list查看，然后恢复指定的stash。
+
+我的理解：在一个分支dev1中做了某些修改但是还没有add和commit，此时转到另一个分支dev2时会看做仅仅是工作区的修改（简单情况下，设这两个分支的最新commit都相同），这时候先在dev1中做修改后转到dev2和先转到dev2在做修改是一样的效果。都只是工作区的修改而已。如果修改被add或是commit了，则在转到另一个分支dev2时若是被察觉到和dev2的最新commit不同，则工作区的内容会被替换成dev2的最新commit中的内容。
+
+我的理解：在两个分支上分别对同一个文件做修改并提交后，如果修改的是明显不同的两个地方，合并这两个分支时不会冲突，而是接纳两处更改。
+
+开发一个新feature，最好新建一个分支；
+如果要丢弃一个没有被合并过的分支，可以通过git branch -D <name>强行删除。
+
+多人协作的工作模式通常是这样：
+    首先，可以试图用git push origin branch-name推送自己的修改；
+    如果推送失败，则因为远程分支比你的本地更新，需要先用git pull试图合并；
+    如果合并有冲突，则解决冲突，并在本地提交；
+    没有冲突或者解决掉冲突后，再用git push origin branch-name推送就能成功！
+如果git pull提示“no tracking information”，则说明本地分支和远程分支的链接关系没有创建，用命令git branch --set-upstream branch-name origin/branch-name。
+
+    查看远程库信息，使用git remote -v；
+    本地新建的分支如果不推送到远程，对其他人就是不可见的；
+    从本地推送分支，使用git push origin branch-name，如果推送失败，先用git pull抓取远程的新提交；
+    在本地创建和远程分支对应的分支，使用git checkout -b branch-name origin/branch-name，本地和远程分支的名称最好一致；
+    建立本地分支和远程分支的关联，使用git branch --set-upstream branch-name origin/branch-name；
+    从远程抓取分支，使用git pull，如果有冲突，要先处理冲突。
